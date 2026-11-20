@@ -107,16 +107,17 @@ class Content extends React.Component {
         this.setState((state) => ({
             movieColors: {
                 ...state.movieColors,
-                [movieId]: !state.movieColors[movieId]
+                [movieId]: ((state.movieColors[movieId] || 0) + 1) % 3
             }
         }));
     }
 
     render() {
-        const colorStyles = {
-            backgroundColor: "#174a73",
-            color: "#ffffff"
-        };
+        const movieColorStates = [
+            undefined,
+            { backgroundColor: "#174a73", color: "#ffffff" },
+            { backgroundColor: "#f2c14e", color: "#202124" }
+        ];
         const movies = [
             { id: "first", title: "«Бійцівський клуб» (Fight Club, 1999)" },
             { id: "second", title: "«Вовк з Волл-стріт» (The Wolf of Wall Street, 2013)" },
@@ -146,7 +147,7 @@ class Content extends React.Component {
                             key: movie.id,
                             className: "movie-item",
                             title: "Клацніть, щоб змінити кольори",
-                            style: this.state.movieColors[movie.id] ? colorStyles : undefined,
+                            style: movieColorStates[this.state.movieColors[movie.id] || 0],
                             onClick: () => this.toggleMovieColor(movie.id)
                         }, movie.title))
                     )
